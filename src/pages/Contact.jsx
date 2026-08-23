@@ -6,6 +6,15 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "@/components/ui/hover-card"
+import {
+  Card,
+  CardAction,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
 
 const Contact = () => {
   return (
@@ -18,10 +27,24 @@ const Contact = () => {
       <HoverCard>
         <HoverCardTrigger>Hover</HoverCardTrigger>
         <HoverCardContent>
-          
+
           <img src='/heroImage.jpg' alt="dfdfd" />
         </HoverCardContent>
       </HoverCard>
+
+      <Card className="w-80">
+        <CardHeader>
+          <CardTitle>Card Title</CardTitle>
+          <CardDescription>Card Description</CardDescription>
+          <CardAction>Card Action</CardAction>
+        </CardHeader>
+        <CardContent>
+          <p>Card Content</p>
+        </CardContent>
+        <CardFooter>
+          <p>Card Footer</p>
+        </CardFooter>
+      </Card>
 
     </div>
   )
