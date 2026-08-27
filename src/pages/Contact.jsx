@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Navbar from '../components/common/Navbar'
 import { Button } from '../components/ui/button'
 import {
@@ -17,34 +17,20 @@ import {
 } from "@/components/ui/card"
 
 const Contact = () => {
+  const [count, setCount] = useState("jeeten");
+
+  useEffect(()=>{
+    console.log("Use effect is running");
+  }, [count])
+
+
   return (
     <div>
       <Navbar />
 
-      <Button>Click me</Button>
-      <Button variant='outline' className="bg-destructive">Click me</Button>
+     <h1 className='text-5xl font-bold text-center'>{count}</h1>
 
-      <HoverCard>
-        <HoverCardTrigger>Hover</HoverCardTrigger>
-        <HoverCardContent>
-
-          <img src='/heroImage.jpg' alt="dfdfd" />
-        </HoverCardContent>
-      </HoverCard>
-
-      <Card className="w-80">
-        <CardHeader>
-          <CardTitle>Card Title</CardTitle>
-          <CardDescription>Card Description</CardDescription>
-          <CardAction>Card Action</CardAction>
-        </CardHeader>
-        <CardContent>
-          <p>Card Content</p>
-        </CardContent>
-        <CardFooter>
-          <p>Card Footer</p>
-        </CardFooter>
-      </Card>
+     <Button onClick={()=>{setCount(count + "hello"); console.log(count)}} >Add</Button>
 
     </div>
   )
