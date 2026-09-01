@@ -6,6 +6,8 @@ import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader,
 import { Field, FieldError, FieldLabel } from '../components/ui/field'
 import { Input } from '../components/ui/input'
 import { Button } from '../components/ui/button'
+import api from '../api/axios'
+import { toast } from 'sonner'
 
 const formSchema = z.object({
     email: z.string().email().min(5, "Must be atleast 5 characters").trim(),
@@ -22,8 +24,21 @@ const Login = () => {
         }
     })
 
-    const onSubmit = (data) => {
+    const onSubmit = async (data) => {
         console.log(data);
+
+        try{
+            const response = await api.post("/auth/login");
+
+            if (response.status === 200){
+                toast.success("Logged in successfully");
+            }else{
+                toast.error( response.message || "Login failed");
+            }
+        }catch(error){
+            toast.error(error.message || "Some error occured");
+            console.log(error.message);
+        }
     }
 
     return (
