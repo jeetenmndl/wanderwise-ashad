@@ -7,6 +7,8 @@ import Login from './pages/Login'
 import Register from './pages/Register'
 import useAuth from './hooks/useAuth'
 import { jwtDecode } from 'jwt-decode'
+import Dashboard from './pages/Dashboard'
+import AppLayout from './layouts/AppLayout'
 
 const App = () => {
 
@@ -53,6 +55,11 @@ const App = () => {
 
         <Route path='/login' element={<Login />} />
         <Route path='/register' element={<Register />} />
+
+        <Route element={<ProtectedRoutes />}>
+          <Route path="/dashboard" element={<Dashboard />} />
+        </Route>
+
       </Routes>
     </BrowserRouter>
   )
