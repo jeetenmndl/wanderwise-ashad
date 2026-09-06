@@ -20,7 +20,11 @@ const Login = () => {
 
     const navigate = useNavigate();
 
-    const { onLogin } = useAuth();
+    const { onLogin, token } = useAuth();
+
+    if(token){
+        navigate("/dashboard");
+    }
 
     const form = useForm({
         resolver: zodResolver(formSchema),
@@ -63,7 +67,7 @@ const Login = () => {
 
                         <Card className="h-full flex flex-col justify-evenly">
                             <CardHeader>
-                                <CardTitle>Register to Wanderwise</CardTitle>
+                                <CardTitle>Login to Wanderwise</CardTitle>
                                 <CardDescription>Enter your credentials to continue.</CardDescription>
                                 <CardAction>
                                     <img src="/wanderwiseLogo.png" alt="wanderwise logo" className='w-12' />
@@ -112,7 +116,7 @@ const Login = () => {
                             </CardContent>
 
                             <CardFooter>
-                                <Button type="submit">Register</Button>
+                                <Button type="submit">Login</Button>
                             </CardFooter>
 
                         </Card>

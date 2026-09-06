@@ -9,6 +9,11 @@ import useAuth from './hooks/useAuth'
 import { jwtDecode } from 'jwt-decode'
 import Dashboard from './pages/Dashboard'
 import AppLayout from './layouts/AppLayout'
+import Trip from './pages/trips/Trip'
+import AddTrip from './pages/trips/AddTrip'
+import TripDetails from './pages/trips/TripDetails'
+import { Edit } from 'lucide-react'
+import EditTrip from './pages/trips/EditTrip'
 
 const App = () => {
 
@@ -58,6 +63,12 @@ const App = () => {
 
         <Route element={<ProtectedRoutes />}>
           <Route path="/dashboard" element={<Dashboard />} />
+
+          <Route path='/trips' element={<Trip />} />
+          <Route path="/trips/add" element={<AddTrip />} />
+          <Route path='/trips/:id' element={<TripDetails />} />
+          <Route path='/trips/edit/:id' element={<EditTrip />} />
+          
         </Route>
 
       </Routes>
