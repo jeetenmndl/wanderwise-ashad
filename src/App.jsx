@@ -12,7 +12,6 @@ import AppLayout from './layouts/AppLayout'
 import Trip from './pages/trips/Trip'
 import AddTrip from './pages/trips/AddTrip'
 import TripDetails from './pages/trips/TripDetails'
-import { Edit } from 'lucide-react'
 import EditTrip from './pages/trips/EditTrip'
 
 const App = () => {
