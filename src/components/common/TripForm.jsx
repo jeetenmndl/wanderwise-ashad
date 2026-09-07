@@ -1,7 +1,11 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import React from 'react'
-import { useForm } from 'react-hook-form'
+import { Controller, useForm } from 'react-hook-form'
 import * as z from 'zod'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card'
+import { Field, FieldError, FieldLabel } from '../ui/field'
+import { Input } from '../ui/input'
+import { Textarea } from '../ui/textarea'
 
 const budgetSchema = z.object({
   total: z.number().min(1, "Must be atleast 1"),
@@ -9,15 +13,15 @@ const budgetSchema = z.object({
 })
 
 const formSchema = z.object({
-    title: z.string().min(5, "Must be atleast 5 characters"),
-    description: z.string().optional(),
-    startDate: z.date(),
-    endDate: z.date(),
-    destinations: z.array(
-      z.string().min(3, "Must be atleast 3 characters")
-    ).min(1, "Atleast one destination is required"),
-    budget: budgetSchema
-}).refine((data)=>{return data.startDate <= data.endDate},{
+  title: z.string().min(5, "Must be atleast 5 characters"),
+  description: z.string().optional(),
+  startDate: z.date(),
+  endDate: z.date(),
+  destinations: z.array(
+    z.string().min(3, "Must be atleast 3 characters")
+  ).min(1, "Atleast one destination is required"),
+  budget: budgetSchema
+}).refine((data) => { return data.startDate <= data.endDate }, {
   message: "Start date must be before end date",
   path: ["startDate"]
 })
@@ -28,11 +32,69 @@ const TripForm = () => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: "",
+      description: "",
+      startDate: new Date().toISOString().split('T')[0],
+      endDate: new Date().toISOString().split('T')[0],
+      destinations: [' '],
+      budget: {
+        total: '',
+        spent: ''
+      }
+
     }
   })
 
+  const onSubmit = (data) => {
+    console.log(data);
+  }
+
   return (
-    <div>TripForm</div>
+    <form onSubmit={form.handleSubmit(onSubmit)}>
+      <Card>
+        <CardHeader>
+          <CardTitle>Add your Trip</CardTitle>
+          <CardDescription>Fill out the details of your next trip.</CardDescription>
+        </CardHeader>
+
+        <CardContent>
+          <Controller
+            name="title"
+            control={form.control}
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <FieldLabel htmlFor={field.name}>Enter trip title</FieldLabel>
+                <Input
+                  {...field}
+                  id={field.name}
+                  type="text"
+                  placeholder="Trip to Nepal with Friends"
+                  aria-invalid={fieldState.invalid}
+                />
+                {fieldState.invalid && <FieldError errors={s[fieldState.error]} />}
+              </Field>
+            )}
+          />
+
+           <Controller
+            name="description"
+            control={form.control}
+            render={({ field, fieldState }) => (
+              <Field data-invalid={fieldState.invalid}>
+                <FieldLabel htmlFor={field.name}>Enter trip description</FieldLabel>
+                <Textarea
+                  {...field}
+                  id={field.name}
+                  type="text"
+                  placeholder="Trip to Nepal with Friends"
+                  aria-invalid={fieldState.invalid}
+                />
+                {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+              </Field>
+            )}
+          />
+        </CardContent>
+      </Card>
+    </form>
   )
 }
 
