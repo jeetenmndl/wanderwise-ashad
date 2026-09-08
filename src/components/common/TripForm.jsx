@@ -1,11 +1,12 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import React from 'react'
-import { Controller, useForm } from 'react-hook-form'
+import { Controller, useFieldArray, useForm } from 'react-hook-form'
 import * as z from 'zod'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card'
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../ui/card'
 import { Field, FieldError, FieldLabel } from '../ui/field'
 import { Input } from '../ui/input'
 import { Textarea } from '../ui/textarea'
+import { Button } from '../ui/button'
 
 const budgetSchema = z.object({
   total: z.number().min(1, "Must be atleast 1"),
@@ -44,19 +45,24 @@ const TripForm = () => {
     }
   })
 
+  const { fields, append, remove } = useFieldArray({
+    control: form.control,
+    name: "destinations"
+  })
+
   const onSubmit = (data) => {
     console.log(data);
   }
 
   return (
-    <form onSubmit={form.handleSubmit(onSubmit)}>
-      <Card className="w-1/3 mx-auto">
+    <form className="py-20" onSubmit={form.handleSubmit(onSubmit)}>
+      <Card className="w-2/5 mx-auto">
         <CardHeader>
           <CardTitle>Add your Trip</CardTitle>
           <CardDescription>Fill out the details of your next trip.</CardDescription>
         </CardHeader>
 
-        <CardContent>
+        <CardContent className="space-y-4">
           <Controller
             name="title"
             control={form.control}
@@ -70,7 +76,7 @@ const TripForm = () => {
                   placeholder="Trip to Nepal with Friends"
                   aria-invalid={fieldState.invalid}
                 />
-                {fieldState.invalid && <FieldError errors={s[fieldState.error]} />}
+                {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
               </Field>
             )}
           />
@@ -107,7 +113,7 @@ const TripForm = () => {
                     type="date"
                     aria-invalid={fieldState.invalid}
                   />
-                  {fieldState.invalid && <FieldError errors={s[fieldState.error]} />}
+                  {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                 </Field>
               )}
             />
@@ -124,7 +130,7 @@ const TripForm = () => {
                     type="date"
                     aria-invalid={fieldState.invalid}
                   />
-                  {fieldState.invalid && <FieldError errors={s[fieldState.error]} />}
+                  {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                 </Field>
               )}
             />
@@ -146,7 +152,7 @@ const TripForm = () => {
                     placeholder="20000"
                     aria-invalid={fieldState.invalid}
                   />
-                  {fieldState.invalid && <FieldError errors={s[fieldState.error]} />}
+                  {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                 </Field>
               )}
             />
@@ -164,18 +170,48 @@ const TripForm = () => {
                     placeholder="2000"
                     aria-invalid={fieldState.invalid}
                   />
-                  {fieldState.invalid && <FieldError errors={s[fieldState.error]} />}
+                  {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                 </Field>
               )}
             />
 
           </div>
 
+              <div className="flex items-center justify-between">
+                <h2>Destinations</h2>
+                <Button type="button" onClick={()=>{append("")}}>Add Destination</Button>
+              </div>
 
-
+          {
+            fields.map((item, index) => {
+              return (
+                <Controller
+                  name={`destinations.${index}`}
+                  control={form.control}
+                  render={({ field, fieldState }) => (
+                    <Field data-invalid={fieldState.invalid}>
+                      <FieldLabel htmlFor={field.name}> Destination {index + 1}</FieldLabel>
+                      <Input
+                        {...field}
+                        id={field.name}
+                        type="text"
+                        placeholder="Kathmandu, Nepal"
+                        aria-invalid={fieldState.invalid}
+                      />
+                      {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                    </Field>
+                  )}
+                />
+              )
+            })
+          }
 
 
         </CardContent>
+
+        <CardFooter>
+          <Button type="submit">Submit</Button>
+        </CardFooter>
       </Card>
     </form>
   )
