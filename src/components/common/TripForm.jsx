@@ -50,7 +50,7 @@ const TripForm = () => {
 
   return (
     <form onSubmit={form.handleSubmit(onSubmit)}>
-      <Card>
+      <Card className="w-1/3 mx-auto">
         <CardHeader>
           <CardTitle>Add your Trip</CardTitle>
           <CardDescription>Fill out the details of your next trip.</CardDescription>
@@ -75,7 +75,7 @@ const TripForm = () => {
             )}
           />
 
-           <Controller
+          <Controller
             name="description"
             control={form.control}
             render={({ field, fieldState }) => (
@@ -92,6 +92,89 @@ const TripForm = () => {
               </Field>
             )}
           />
+
+          <div className="grid grid-cols-2 gap-2">
+
+            <Controller
+              name="startDate"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor={field.name}>Enter start date</FieldLabel>
+                  <Input
+                    {...field}
+                    id={field.name}
+                    type="date"
+                    aria-invalid={fieldState.invalid}
+                  />
+                  {fieldState.invalid && <FieldError errors={s[fieldState.error]} />}
+                </Field>
+              )}
+            />
+
+            <Controller
+              name="endDate"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor={field.name}>Enter end date</FieldLabel>
+                  <Input
+                    {...field}
+                    id={field.name}
+                    type="date"
+                    aria-invalid={fieldState.invalid}
+                  />
+                  {fieldState.invalid && <FieldError errors={s[fieldState.error]} />}
+                </Field>
+              )}
+            />
+
+          </div>
+
+          <div className="grid grid-cols-2 gap-2">
+
+            <Controller
+              name="budget.total"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor={field.name}>Enter budget of trip</FieldLabel>
+                  <Input
+                    {...field}
+                    id={field.name}
+                    type="number"
+                    placeholder="20000"
+                    aria-invalid={fieldState.invalid}
+                  />
+                  {fieldState.invalid && <FieldError errors={s[fieldState.error]} />}
+                </Field>
+              )}
+            />
+
+            <Controller
+              name="budget.spent"
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor={field.name}>Enter the spent amount</FieldLabel>
+                  <Input
+                    {...field}
+                    id={field.name}
+                    type="number"
+                    placeholder="2000"
+                    aria-invalid={fieldState.invalid}
+                  />
+                  {fieldState.invalid && <FieldError errors={s[fieldState.error]} />}
+                </Field>
+              )}
+            />
+
+          </div>
+
+
+
+
+
         </CardContent>
       </Card>
     </form>
