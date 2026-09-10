@@ -7,17 +7,20 @@ import { Field, FieldError, FieldLabel } from '../ui/field'
 import { Input } from '../ui/input'
 import { Textarea } from '../ui/textarea'
 import { Button } from '../ui/button'
+import api from '../../api/axios'
+import { toast } from 'sonner'
+import { useNavigate } from 'react-router-dom'
 
 const budgetSchema = z.object({
-  total: z.number().min(1, "Must be atleast 1"),
-  spent: z.number().optional()
+  total: z.coerce.number().min(1, "Must be atleast 1"),
+  spent: z.coerce.number().optional()
 })
 
 const formSchema = z.object({
   title: z.string().min(5, "Must be atleast 5 characters"),
   description: z.string().optional(),
-  startDate: z.date(),
-  endDate: z.date(),
+  startDate: z.coerce.date(),
+  endDate: z.coerce.date(),
   destinations: z.array(
     z.string().min(3, "Must be atleast 3 characters")
   ).min(1, "Atleast one destination is required"),
@@ -28,6 +31,8 @@ const formSchema = z.object({
 })
 
 const TripForm = () => {
+
+  const navigate = useNavigate();
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -50,8 +55,23 @@ const TripForm = () => {
     name: "destinations"
   })
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     console.log(data);
+
+    try{
+      const response = await api.post("/trips", data);
+
+      if(response.status === 201){
+        toast.success( "Trip created successfully" );
+        navigate("/trips");
+      }else{
+        toast.error("Error creating trip.")
+        console.log(response);
+      }
+    }catch(error){
+      toast.error( error.message || "Error creating trip");
+      console.log(error);
+    }
   }
 
   return (
