@@ -4,6 +4,7 @@ import { Button } from '../../components/ui/button'
 import { EllipsisVertical, Plus } from 'lucide-react'
 import api from '../../api/axios'
 import { toast } from 'sonner'
+import { formatDate } from '../../lib/utils'
 
 const Trip = () => {
 
@@ -50,7 +51,7 @@ const Trip = () => {
                     <Card key={trip._id}>
                       <CardHeader className="border-b">
                         <CardTitle>{trip.title}</CardTitle>
-                        <CardDescription>{trip.startDate} - {trip.endDate} </CardDescription>
+                        <CardDescription>{formatDate(trip.startDate)} - {formatDate(trip.endDate)} </CardDescription>
                         <CardAction>
                           <EllipsisVertical />
                         </CardAction>
