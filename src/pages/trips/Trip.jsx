@@ -1,9 +1,30 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../../components/ui/card'
 import { Button } from '../../components/ui/button'
 import { EllipsisVertical, Plus } from 'lucide-react'
+import api from '../../api/axios'
+import { toast } from 'sonner'
 
 const Trip = () => {
+
+  const [trips, setTrips] = useState([]);
+
+  useEffect(() => {
+
+    const fetchTrips = async () => {
+      try {
+        const response = await api.get("/trips");
+        setTrips(response.data);
+      } catch (error) {
+        toast.error("Some error occured while fetching trips");
+        console.log(error);
+      }
+    }
+
+    fetchTrips();
+  }, [])
+
+
   return (
     <div className="px-20 py-24 bg-purple-100">
       <Card>
@@ -18,22 +39,34 @@ const Trip = () => {
 
         <CardContent>
           <div className="grid grid-cols-3 gap-6">
-              <Card>
-                <CardHeader className="border-b">
-                  <CardTitle>Trip to Nepal with friends</CardTitle>
-                  <CardDescription>Sep 10, 2026 - Sep 12, 2026</CardDescription>
-                  <CardAction>
-                    <EllipsisVertical />
-                  </CardAction>
-                </CardHeader>
-                <CardContent>
-                  <p>Budget: Rs. 70000</p>
-                  <p>Spent: Rs. 2000</p>
-                </CardContent>
-                <CardFooter>
-                  <p>Destinations: Kathmandu, Pokhara, Biratnagar.</p>
-                </CardFooter>
-              </Card>
+
+            {
+              trips.length == 0
+                ?
+                <div className="text-3xl font-semibold text-center py-20">You do not have any trips to show. Create a new trip first.</div>
+                :
+                trips.map((trip) => {
+                  return (
+                    <Card key={trip._id}>
+                      <CardHeader className="border-b">
+                        <CardTitle>{trip.title}</CardTitle>
+                        <CardDescription>{trip.startDate} - {trip.endDate} </CardDescription>
+                        <CardAction>
+                          <EllipsisVertical />
+                        </CardAction>
+                      </CardHeader>
+                      <CardContent>
+                        <p>Budget: Rs. {trip.budget.total}</p>
+                        <p>Spent: Rs. {trip.budget.spent}</p>
+                      </CardContent>
+                      <CardFooter>
+                        <p>Destinations: {trip.destinations.join(", ")}</p>
+                      </CardFooter>
+                    </Card>
+                  )
+                })
+            }
+
           </div>
         </CardContent>
 
