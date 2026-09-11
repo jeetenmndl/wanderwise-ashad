@@ -10,6 +10,7 @@ import { Button } from '../ui/button'
 import api from '../../api/axios'
 import { toast } from 'sonner'
 import { useNavigate } from 'react-router-dom'
+import { X } from 'lucide-react'
 
 const budgetSchema = z.object({
   total: z.coerce.number().min(1, "Must be atleast 1"),
@@ -58,18 +59,18 @@ const TripForm = () => {
   const onSubmit = async (data) => {
     console.log(data);
 
-    try{
+    try {
       const response = await api.post("/trips", data);
 
-      if(response.status === 201){
-        toast.success( "Trip created successfully" );
+      if (response.status === 201) {
+        toast.success("Trip created successfully");
         navigate("/trips");
-      }else{
+      } else {
         toast.error("Error creating trip.")
         console.log(response);
       }
-    }catch(error){
-      toast.error( error.message || "Error creating trip");
+    } catch (error) {
+      toast.error(error.message || "Error creating trip");
       console.log(error);
     }
   }
@@ -197,31 +198,37 @@ const TripForm = () => {
 
           </div>
 
-              <div className="flex items-center justify-between">
-                <h2>Destinations</h2>
-                <Button type="button" onClick={()=>{append("")}}>Add Destination</Button>
-              </div>
+          <div className="flex items-center justify-between">
+            <h2>Destinations</h2>
+            <Button type="button" onClick={() => { append("") }}>Add Destination</Button>
+          </div>
 
           {
             fields.map((item, index) => {
               return (
-                <Controller
-                  name={`destinations.${index}`}
-                  control={form.control}
-                  render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel htmlFor={field.name}> Destination {index + 1}</FieldLabel>
-                      <Input
-                        {...field}
-                        id={field.name}
-                        type="text"
-                        placeholder="Kathmandu, Nepal"
-                        aria-invalid={fieldState.invalid}
-                      />
-                      {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-                    </Field>
-                  )}
-                />
+                <div className="flex items-end gap-2">
+                  <Controller
+                    name={`destinations.${index}`}
+                    control={form.control}
+                    render={({ field, fieldState }) => (
+                      <Field data-invalid={fieldState.invalid}>
+                        <FieldLabel htmlFor={field.name}> Destination {index + 1}</FieldLabel>
+                        <Input
+                          {...field}
+                          id={field.name}
+                          type="text"
+                          placeholder="Kathmandu, Nepal"
+                          aria-invalid={fieldState.invalid}
+                        />
+                        {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                      </Field>
+                    )}
+                  />
+
+                  <Button type="button" variant="outline" onClick={() => remove(index)}>
+                    <X />
+                  </Button>
+                </div>
               )
             })
           }
