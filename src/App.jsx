@@ -13,6 +13,8 @@ import Trip from './pages/trips/Trip'
 import AddTrip from './pages/trips/AddTrip'
 import TripDetails from './pages/trips/TripDetails'
 import EditTrip from './pages/trips/EditTrip'
+import Baggage from './pages/baggage/Baggage'
+import BaggageDetails from './pages/baggage/BaggageDetails'
 
 const App = () => {
 
@@ -67,6 +69,9 @@ const App = () => {
           <Route path="/trips/add" element={<AddTrip />} />
           <Route path='/trips/:id' element={<TripDetails />} />
           <Route path='/trips/edit/:id' element={<EditTrip />} />
+
+          <Route path="/baggage" element={<Baggage />} />
+          <Route path="/baggage/:id" element={<BaggageDetails />} />
           
         </Route>
 
