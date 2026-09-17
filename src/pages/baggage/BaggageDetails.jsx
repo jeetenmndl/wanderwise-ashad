@@ -37,22 +37,54 @@ const BaggageDetails = () => {
         fetchBaggages();
     }, [dependancy])
 
-    
-    const addBaggage = async ()=>{
+
+    const addBaggage = async () => {
         const name = document.getElementById("baggageInput");
 
-        try{
-            const response = await api.post(`/${id}/baggages`, {name: name.value});
+        try {
+            const response = await api.post(`/${id}/baggages`, { name: name.value });
 
-            if(response.status === 201){
+            if (response.status === 201) {
                 toast.success("Baggage added successfully");
                 name.value = "";
                 setDependency(dependancy + 1);
-            }else{
+            } else {
                 toast.error("Error while adding baggage");
             }
-        }catch(error){
+        } catch (error) {
             toast.error(error.message || "Error while adding baggage");
+            console.log(error);
+        }
+    }
+
+    const onDelete = async (baggageId) => {
+        try {
+            const response = await api.delete(`/${id}/baggages/${baggageId}`);
+
+            if (response.status === 200) {
+                toast.success("Baggage deleted successfully!!");
+                setDependency(dependancy + 1);
+            } else {
+                toast.error("Error while deleting baggage.");
+            }
+        } catch (error) {
+            toast.error(error.message || "Error while creating baggage");
+            console.log(error);
+        }
+    }
+
+    const onCheck = async (baggageId, completed) => {
+        try {
+            const response = await api.patch(`/${id}/baggages/${baggageId}`, { completed: !completed});
+
+            if (response.status === 200) {
+                toast.success("Baggage packed successfully!!");
+                setDependency(dependancy + 1);
+            } else {
+                toast.error("Error while packed baggage.");
+            }
+        } catch (error) {
+            toast.error(error.message || "Error while packed baggage");
             console.log(error);
         }
     }
@@ -90,18 +122,33 @@ const BaggageDetails = () => {
                 <CardContent>
                     <div className='grid grid-cols-3 gap-6'>
 
-                        <div className='border rounded p-4 flex items-center justify-between'>
+                        {
+                            baggages.length == 0
+                                ?
+                                <div className='text-xl font-semibold'>No baggages to show, create one first.</div>
+                                :
+                                baggages.map((item) => {
+                                    return (
+                                        <div className={`border rounded p-4 flex items-center justify-between ${item.completed ? "bg-green-100" : "bg-red-100"}`}>
 
-                            <div className="flex items-center gap-2">
-                                <Checkbox />
-                                <p className='text-lg font-medium'>Medicine</p>
-                            </div>
+                                            <div className="flex items-center gap-2">
+                                                <Checkbox onCheckedChange={()=>{onCheck(item._id, item.completed)}} checked={item.completed} />
+                                                <p className='text-lg font-medium'>{item.name} </p>
+                                            </div>
 
-                            <div className="space-x-1">
-                                <Button variant="outline" size="icon"> <SquarePen /> </Button>
-                                <Button variant="outline" size="icon"> <Trash2 /> </Button>
-                            </div>
-                        </div>
+                                            <div className="space-x-1">
+                                                <Button variant="outline" size="icon"> <SquarePen /> </Button>
+
+                                                <Button onClick={()=>{onDelete(item._id)}} variant="outline" size="icon"> 
+                                                    <Trash2 className="text-red-700" /> 
+                                                </Button>
+                                            </div>
+                                        </div>
+                                    )
+                                })
+                        }
+
+
 
                     </div>
                 </CardContent>
