@@ -4,6 +4,7 @@ import ExpenseForm from '../../components/common/ExpenseForm'
 import { useParams } from 'react-router-dom';
 import api from '../../api/axios';
 import { toast } from 'sonner';
+import InviteForm from '../../components/common/InviteForm';
 
 const TripDetails = () => {
 
@@ -43,6 +44,8 @@ const TripDetails = () => {
       <div className="w-1/4">
           
           <ExpenseForm trip={trip} />
+
+          <InviteForm trip={trip}/>
 
       </div>
 
