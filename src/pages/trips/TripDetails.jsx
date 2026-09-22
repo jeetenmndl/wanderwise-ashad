@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import api from '../../api/axios';
 import { toast } from 'sonner';
 import InviteForm from '../../components/common/InviteForm';
+import TripInfo from '../../components/common/TripInfo';
 
 const TripDetails = () => {
 
@@ -37,7 +38,7 @@ const TripDetails = () => {
 
       {/* left part  */}
       <Card className="w-3/4">
-        
+        <TripInfo trip={trip} />
       </Card>
 
       {/* right part  */}
