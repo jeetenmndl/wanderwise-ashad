@@ -105,8 +105,8 @@ const Dashboard = () => {
             <section className="grid gap-6 lg:grid-cols-2">
               <Card className="border-0 shadow-sm">
                 <CardHeader className="border-b"><CardTitle>Trip timeline</CardTitle><CardDescription>Your journeys, ordered by departure date</CardDescription></CardHeader>
-                <CardContent className="max-h-[31rem] overflow-y-auto p-6">
-                  <div className="relative space-y-6 before:absolute before:bottom-2 before:left-[7px] before:top-2 before:w-px before:bg-purple-200">
+                <CardContent className="max-h-124 overflow-y-auto p-6">
+                  <div className="relative space-y-6 before:absolute before:bottom-2 before:left-1.75 before:top-2 before:w-px before:bg-purple-200">
                     {[...trips].sort((a, b) => new Date(a.startDate) - new Date(b.startDate)).map((trip) => {
                       const status = statusStyles[getTripStatus(trip)]
                       return (
