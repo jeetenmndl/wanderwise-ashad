@@ -7,7 +7,8 @@ import { Progress } from '../ui/progress'
 import api from '@/api/axios'
 import { toast } from 'sonner'
 import { useNavigate } from 'react-router-dom'
-import { formatDate } from '@/lib/formatter'
+import { formatDate } from '../../lib/utils'
+
 
 const TripInfo = ({ trip }) => {
     const navigate = useNavigate();
